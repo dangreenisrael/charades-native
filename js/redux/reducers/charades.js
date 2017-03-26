@@ -7,11 +7,10 @@ import _ from 'lodash';
 
 const DEFAULT_STATE = {
   difficulty: 'Easy',
-  word: '',
+  word: 'dog',
   Easy: wordList.easy,
   Medium: wordList.medium,
   Hard: wordList.hard,
-  "Very Hard": wordList.veryHard
 };
 
 const generateWord = (state) =>{
