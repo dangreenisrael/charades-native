@@ -1248,7 +1248,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.Charades;
+				PRODUCT_BUNDLE_IDENTIFIER = com.charades.dangreenleipciger;
 				PRODUCT_NAME = Charades;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1271,7 +1271,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.Charades;
+				PRODUCT_BUNDLE_IDENTIFIER = com.charades.dangreenleipciger;
 				PRODUCT_NAME = Charades;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
