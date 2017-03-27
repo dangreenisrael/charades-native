@@ -1,0 +1,3 @@
+export const SET_DIFFICULTY = 'SET_DIFFICULTY';
+export const SET_VISIBILITY = 'SET_VISIBILITY';
+export const GENERATE_WORD = 'GENERATE_WORD';

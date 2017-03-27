@@ -1,18 +1,12 @@
 import React, {Component} from 'react';
 import {Text} from 'native-base';
-
-const style = {
-  lineHeight: 50,
-  fontSize: 40,
-  textAlign: 'center',
-  marginBottom: 100
-};
+import style from './style';
+import {connect} from 'react-redux';
 
 class ShowWord extends Component {
   static propTypes = {
-    word: React.PropTypes.string.isRequired,
-    isVisible: React.PropTypes.bool.isRequired
-    
+    word: React.PropTypes.string,
+    isVisible: React.PropTypes.bool
   };
   
   render() {
@@ -24,7 +18,11 @@ class ShowWord extends Component {
       </Text>
     );
   }
-  
 }
 
-export default ShowWord;
+const mapStateToProps = state => ({
+  word: state.charades.word,
+  isVisible: state.charades.isVisible
+});
+
+export default connect(mapStateToProps)(ShowWord);

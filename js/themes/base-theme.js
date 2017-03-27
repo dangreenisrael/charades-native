@@ -9,7 +9,7 @@ export default {
   badgeColor: '#fff',
 
 
-    // Button
+    // DifficultyButton
   btnFontFamily: (Platform.OS === 'ios') ? 'HelveticaNeue' : 'Roboto_medium',
   btnDisabledBg: '#b5b5b5',
   btnDisabledClr: '#f1f1f1',
@@ -175,7 +175,7 @@ export default {
   inverseProgressColor: '#1A191B',
 
 
-  // Radio Button
+  // Radio DifficultyButton
   radioBtnSize: (Platform.OS === 'ios') ? 25 : 23,
   radioColor: '#7e7e7e',
 

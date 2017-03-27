@@ -3,11 +3,6 @@ export default {
   container: {
     backgroundColor: '#FBFAFA',
   },
-  centerButton: {
-    alignSelf: 'center',
-    marginTop: 20,
-    marginBottom: 20
-  },
   mainView: {
     flex: 1,
     flexDirection: 'column',

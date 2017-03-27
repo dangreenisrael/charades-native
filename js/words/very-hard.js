@@ -20,7 +20,7 @@ export default [
   "corduroy",
   "fizz",
   "shrink ray",
-  "game plan",
+  "Game plan",
   "personal bubble",
   "déjà vu",
   "Olympian ",

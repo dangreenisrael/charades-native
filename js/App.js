@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 // import AppNavigator from './AppNavigator';
 import { Provider } from 'react-redux';
 import configureStore from './redux/configureStore';
-import Game from './components/game';
+import Game from './components/Game/GameContainer';
 class App extends Component {
   constructor(props) {
     super(props);

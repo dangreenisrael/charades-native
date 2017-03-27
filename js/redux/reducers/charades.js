@@ -1,44 +1,36 @@
 /**
  * Created by Dan on 2017-02-05.
  */
-import {SET_DIFFICULTY, GENERATE_WORD} from '../actions/charades';
+import {SET_DIFFICULTY, GENERATE_WORD, SET_VISIBILITY} from '../actions/types';
 import wordList from '../../words/word-list';
+import update from 'immutability-helper';
 import _ from 'lodash';
 
 const DEFAULT_STATE = {
   difficulty: 'Easy',
   word: 'dog',
-  Easy: wordList.easy,
-  Medium: wordList.medium,
-  Hard: wordList.hard,
-};
-
-const generateWord = (state) =>{
-  const {difficulty} = state;
-  const wordList = state[difficulty];
-  const newWord = _.sample(wordList);
-  const newWordList = wordList.filter(eachWord=>{
-    return eachWord !== newWord;
-  });
-  let tempObject = {
-    word: newWord || "No More Words",
-    [difficulty]: newWordList
-  };
-
-  return Object.assign({}, state, tempObject);
-};
-
-const setDifficulty = (state, action) => {
-  return Object.assign({}, state, {difficulty: action.difficulty});
+  isVisible: false,
+  Easy: wordList.Easy,
+  Medium: wordList.Medium,
+  Hard: wordList.Hard
 };
 
 const rootReducer = (state = DEFAULT_STATE, action) => {
   if (action) {
     switch (action.type) {
       case SET_DIFFICULTY:
-        return setDifficulty(state, action);
+        return update(state, {difficulty: {$set: action.difficulty}});
+      case SET_VISIBILITY:
+        return update(state, {isVisible: {$set: action.visibility}});
       case GENERATE_WORD:
-        return generateWord(state);
+        const {difficulty} = action;
+        const currentList = _.shuffle(state[difficulty]);
+        const word = currentList.pop();
+        return update(state,{
+          word: {$set: word},
+          [difficulty]: {$set:currentList}
+        });
+        return state;
       default:
         return state;
     }
