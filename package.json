@@ -8,7 +8,7 @@
 		"test": "jest",
 		"icon-regen": "app-icon generate",
 		"postinstall": "rndebugger-open",
-		"open-debugger": "open rndebugger://set-debugger-loc?host=localhost&port=8082"
+		"debug": "open rndebugger://set-debugger-loc?host=localhost&port=8082"
 	},
 	"dependencies": {
 		"immutability-helper": "^2.1.2",
@@ -20,7 +20,8 @@
 		"react-native-vector-icons": "^4.0.0",
 		"react-redux": "^5.0.3",
 		"redux": "^3.6.0",
-		"redux-persist": "^4.5.0"
+		"redux-persist": "^4.5.0",
+		"redux-thunk": "^2.2.0"
 	},
 	"devDependencies": {
 		"babel-eslint": "^7.2.1",

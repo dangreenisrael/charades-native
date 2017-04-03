@@ -3,7 +3,7 @@ import {
   View, Container, Header, Title, Text, Button, Icon, Footer, FooterTab
 } from 'native-base';
 import {connect} from 'react-redux';
-import {setDifficulty, setVisibility} from '../../../redux/actions/charades';
+import {setDifficulty} from '../../../redux/actions-creators';
 
 const icon = (difficulty)=>{
   switch (difficulty){
@@ -21,7 +21,6 @@ class DifficultyButton extends Component {
     setDifficulty: React.PropTypes.func,
     difficulty: React.PropTypes.string,
     currentDifficulty: React.PropTypes.string,
-    setVisibility: React.PropTypes.func
   };
   
   constructor(props){
@@ -29,9 +28,8 @@ class DifficultyButton extends Component {
     this.setDifficulty = this.setDifficulty.bind(this);
   }
   setDifficulty() {
-    const {setDifficulty, difficulty, setVisibility} = this.props;
+    const {setDifficulty, difficulty} = this.props;
     setDifficulty(difficulty);
-    setVisibility(false);
   }
   
   render() {
@@ -50,11 +48,10 @@ class DifficultyButton extends Component {
 }
 
 const mapStateToProps = state => ({
-  currentDifficulty: state.charades.difficulty
+  currentDifficulty: state.ui.difficulty
 });
 
 const bindAction = (dispatch) => ({
   setDifficulty: (difficulty) => dispatch(setDifficulty(difficulty)),
-  setVisibility: (visibility) => dispatch(setVisibility(visibility))
 });
 export default connect(mapStateToProps, bindAction)(DifficultyButton);

@@ -4,9 +4,10 @@ import { createStore, compose } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import reducer from './reducers';
 
+
 export default function configureStore(onCompletion:()=>void):any {
   const enhancer = compose(
-      autoRehydrate()
+      // autoRehydrate()
   );
 
   const store = createStore(

@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-import charades from './charades';
+import dictionary from './dictionary';
+import ui from './ui';
 
 export default combineReducers({
-  charades
+  dictionary,
+  ui
 });

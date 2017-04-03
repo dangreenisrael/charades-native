@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Text} from 'native-base';
 import style from './style';
 import {connect} from 'react-redux';
-
+import {getCurrentWord, getVisibility} from '../../../redux/selectors';
 class ShowWord extends Component {
   static propTypes = {
     word: React.PropTypes.string,
@@ -20,9 +20,11 @@ class ShowWord extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  word: state.charades.word,
-  isVisible: state.charades.isVisible
-});
+const mapStateToProps = state => {
+  return ({
+    word: getCurrentWord(state),
+    isVisible: getVisibility(state)
+  });
+};
 
 export default connect(mapStateToProps)(ShowWord);
