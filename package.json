@@ -11,6 +11,7 @@
 		"debug": "open rndebugger://set-debugger-loc?host=localhost&port=8082"
 	},
 	"dependencies": {
+		"enzyme": "^2.8.2",
 		"immutability-helper": "^2.1.2",
 		"lodash": "^4.17.4",
 		"native-base": "^2.1.4",
@@ -28,19 +29,28 @@
 		"babel-eslint": "^7.2.1",
 		"babel-jest": "19.0.0",
 		"babel-preset-react-native": "1.9.1",
+		"enzyme-to-json": "^1.5.1",
 		"eslint": "^3.18.0",
 		"eslint-plugin-react": "^6.10.3",
 		"eslint-plugin-react-native": "^2.3.1",
 		"jest": "19.0.2",
 		"react-native-debugger-open": "^0.3.11",
-		"react-test-renderer": "~15.5.4",
+		"react-native-mock": "^0.3.1",
+		"react-test-renderer": "^15.5.4",
 		"remote-redux-devtools": "^0.5.7"
 	},
 	"jest": {
 		"preset": "react-native",
-    "verbose": true,
-    "transformIgnorePatterns": [
-      "/node_modules/(?!native-base)/"
-    ]
+		"verbose": true,
+		"transformIgnorePatterns": [
+			"/node_modules/(?!native-base)/"
+		],
+		"setupTestFrameworkScriptFile": "<rootDir>/testSetup.js",
+		"collectCoverageFrom": [
+			"**/*.{js,jsx}",
+			"!**/node_modules/**",
+			"!**/themes/**",
+			"!**/coverage/**"
+		]
 	}
 }

@@ -23,7 +23,7 @@ const mapStateToProps = state => ({
   category: getCategory(state)
 });
 
-const bindActionToProps = dispatch => ({
+export const mapDispatchToProps = dispatch => ({
   generateWord: () => dispatch(generateWordAndSetAsCurrent())
 });
 
@@ -32,4 +32,4 @@ GenerateWord.propTypes = {
   category: React.PropTypes.string
 };
 
-export default connect(mapStateToProps, bindActionToProps)(GenerateWord);
+export default connect(mapStateToProps, mapDispatchToProps)(GenerateWord);

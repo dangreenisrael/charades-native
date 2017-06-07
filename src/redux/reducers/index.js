@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import dictionary from './dictionary';
+import category from './wordList';
 import ui from './ui';
 
 export default combineReducers({
-  dictionary,
+  category,
   ui
 });

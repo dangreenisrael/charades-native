@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CategorySelector Renders Correctly 1`] = `
+<Styled(Button)
+  active={false}
+  onPress={[Function]}
+  title="Movies"
+>
+  <Styled(Text)>
+    Movies
+  </Styled(Text)>
+  <Styled(Icon)
+    name="ios-speedometer-outline"
+  />
+</Styled(Button)>
+`;

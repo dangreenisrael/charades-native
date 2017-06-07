@@ -4,7 +4,7 @@
 
 import React, { Component } from 'react';
 import {AppRegistry} from 'react-native';
-import App from './js/App';
+import App from './src/App';
 
 export default class Charades extends Component {
   render() {

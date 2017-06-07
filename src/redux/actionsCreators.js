@@ -1,4 +1,4 @@
-import {SET_CATEGORY, UPDATE_DICTIONARY, SET_CURRENT_WORD} from './types';
+import {SET_CATEGORY, SET_CURRENT_WORD, UPDATE_WORD_LIST} from './types';
 
 export const setCategory = category => {
   return {
@@ -14,10 +14,10 @@ export const setCurrentWord = word => {
   };
 };
 
-export const updateDictionary = ({category, word}) => {
+export const updateWordList = ({category, wordList}) => {
   return {
-    type: UPDATE_DICTIONARY,
-    category: category,
-    word: word
+    type: UPDATE_WORD_LIST,
+    category,
+    wordList
   };
 };

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text, Button, Icon} from 'native-base';
 import {connect} from 'react-redux';
-import {setCategory} from '../../../redux/actions-creators';
+import {setCategory} from '../../../redux/actionsCreators';
 
 const icon = category => {
   switch (category) {
@@ -15,19 +15,14 @@ const icon = category => {
 };
 
 export class CategoryButton extends Component {
-  constructor(props) {
-    super(props);
-    this.setCategory = this.setCategory.bind(this);
-  }
-  setCategory() {
-    const {setCategory, category} = this.props;
-    setCategory(category);
-  }
-
   render() {
-    const {category, currentCategory} = this.props;
+    const {category, currentCategory, setCategory} = this.props;
     return (
-      <Button title={category} active={currentCategory === category} onPress={this.setCategory}>
+      <Button
+        title={category}
+        active={currentCategory === category}
+        onPress={() => setCategory(category)}
+      >
         <Text>
           {category}
         </Text>
@@ -41,7 +36,7 @@ const mapStateToProps = state => ({
   currentCategory: state.ui.category
 });
 
-const bindActionToProps = dispatch => ({
+export const mapDispatchToProps = dispatch => ({
   setCategory: category => dispatch(setCategory(category))
 });
 
@@ -50,4 +45,4 @@ CategoryButton.propTypes = {
   category: React.PropTypes.string,
   currentCategory: React.PropTypes.string
 };
-export default connect(mapStateToProps, bindActionToProps)(CategoryButton);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryButton);
