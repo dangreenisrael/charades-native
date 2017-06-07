@@ -5,9 +5,8 @@ import {SET_DIFFICULTY, SET_CURRENT_WORD} from '../types';
 import update from 'immutability-helper';
 
 const DEFAULT_STATE = {
-  difficulty: 'Easy',
-  isVisible: false,
-  word: "Dog"
+  difficulty: 'Things',
+  isVisible: false
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -19,7 +18,7 @@ export default (state = DEFAULT_STATE, action) => {
           isVisible: {$set: false}
         });
       case SET_CURRENT_WORD:
-        return update(state,{
+        return update(state, {
           word: {$set: action.word},
           isVisible: {$set: true}
         });

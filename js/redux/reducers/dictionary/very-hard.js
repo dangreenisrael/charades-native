@@ -1,5 +1,4 @@
 export default [
-  "Will Smith",
   "defect",
   "standing ovation",
   "flag",

@@ -3,22 +3,24 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"start": "node node_modules/react-native/local-cli/cli.js start",
+		"start": "react-native start",
 		"release": "react-native run-ios --configuration Release",
 		"test": "jest",
 		"icon-regen": "app-icon generate",
 		"postinstall": "rndebugger-open",
-		"debug": "open rndebugger://set-debugger-loc?host=localhost&port=8082"
+		"debug-old": "open rndebugger://set-debugger-loc?host=localhost&port=8082",
+		"debug": "open rndebugger://set-debugger-loc?port=8082"
 	},
 	"dependencies": {
 		"immutability-helper": "^2.1.2",
 		"lodash": "^4.17.4",
-		"native-base": "^2.0.13",
-		"react": "~15.4.1",
-		"react-native": "0.42.3",
+		"native-base": "^2.1.4",
+		"pluralize": "^4.0.0",
+		"react": "16.0.0-alpha.6",
+		"react-native": "0.44.3",
 		"react-native-navigation-redux-helpers": "^0.5.0",
 		"react-native-vector-icons": "^4.0.0",
-		"react-redux": "^5.0.3",
+		"react-redux": "^5.0.5",
 		"redux": "^3.6.0",
 		"redux-persist": "^4.5.0",
 		"redux-thunk": "^2.2.0"
@@ -31,8 +33,8 @@
 		"eslint-plugin-react": "^6.10.3",
 		"eslint-plugin-react-native": "^2.3.1",
 		"jest": "19.0.2",
-		"react-native-debugger-open": "^0.3.3",
-		"react-test-renderer": "~15.4.1",
+		"react-native-debugger-open": "^0.3.11",
+		"react-test-renderer": "~15.5.4",
 		"remote-redux-devtools": "^0.5.7"
 	},
 	"jest": {

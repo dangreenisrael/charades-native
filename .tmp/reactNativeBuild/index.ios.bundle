@@ -46398,9 +46398,9 @@ var _configureStore = require(441                     ); // 441 = ./redux/config
 
 var _configureStore2 = babelHelpers.interopRequireDefault(_configureStore);
 
-var _GameContainer = require(464                              ); // 464 = ./components/Game/GameContainer
+var _Game = require(465                     ); // 465 = ./components/Game/Game
 
-var _GameContainer2 = babelHelpers.interopRequireDefault(_GameContainer);
+var _Game2 = babelHelpers.interopRequireDefault(_Game);
 
 var App = function (_Component) {
   babelHelpers.inherits(App, _Component);
@@ -46425,7 +46425,7 @@ var App = function (_Component) {
       return _react2.default.createElement(
         _reactRedux.Provider,
         { store: this.state.store },
-        _react2.default.createElement(_GameContainer2.default, null)
+        _react2.default.createElement(_Game2.default, null)
       );
     }
   }]);
@@ -48186,7 +48186,6 @@ var _reducers2 = babelHelpers.interopRequireDefault(_reducers);
 
 function configureStore(onCompletion) {
   var enhancer = (0, _redux.compose)((0, _reduxPersist.autoRehydrate)());
-
   var store = (0, _redux.createStore)(_reducers2.default, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), enhancer);
   (0, _reduxPersist.persistStore)(store, { storage: _reactNative.AsyncStorage }, onCompletion);
 
@@ -49003,21 +49002,26 @@ __d(/* Charades/js/redux/reducers/index.js */function(global, require, module, e
 
 var _redux = require(415    ); // 415 = redux
 
-var _words = require(793      ); // 793 = ./words
+var _dictionary = require(455           ); // 455 = ./dictionary
 
-var _words2 = babelHelpers.interopRequireDefault(_words);
+var _dictionary2 = babelHelpers.interopRequireDefault(_dictionary);
+
+var _ui = require(464   ); // 464 = ./ui
+
+var _ui2 = babelHelpers.interopRequireDefault(_ui);
 
 exports.default = (0, _redux.combineReducers)({
-  charades: _words2.default
+  dictionary: _dictionary2.default,
+  ui: _ui2.default
 });
 }, 454, null, "Charades/js/redux/reducers/index.js");
-__d(/* Charades/js/redux/reducers/words.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+__d(/* Charades/js/redux/reducers/dictionary.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _types = require(456               ); // 456 = ../actions/types
+var _types = require(456       ); // 456 = ../types
 
-var _wordList = require(794                        ); // 794 = ../defaultState/word-list
+var _wordList = require(457                     ); // 457 = ./dictionary/word-list
 
 var _wordList2 = babelHelpers.interopRequireDefault(_wordList);
 
@@ -49030,12 +49034,9 @@ var _lodash = require(463     ); // 463 = lodash
 var _lodash2 = babelHelpers.interopRequireDefault(_lodash);
 
 var DEFAULT_STATE = {
-  difficulty: 'Easy',
-  word: 'dog',
-  isVisible: false,
-  Easy: _wordList2.default.Easy,
-  Medium: _wordList2.default.Medium,
-  Hard: _wordList2.default.Hard
+  Movies: _wordList2.default.movies,
+  Idioms: _wordList2.default.idioms,
+  Things: _wordList2.default.things
 };
 
 var rootReducer = function rootReducer() {
@@ -49044,18 +49045,12 @@ var rootReducer = function rootReducer() {
 
   if (action) {
     switch (action.type) {
-      case _types.SET_DIFFICULTY:
-        return (0, _immutabilityHelper2.default)(state, { difficulty: { $set: action.difficulty } });
-      case _types.SET_VISIBILITY:
-        return (0, _immutabilityHelper2.default)(state, { isVisible: { $set: action.visibility } });
-      case _types.GENERATE_WORD:
-        var difficulty = action.difficulty;
+      case _types.UPDATE_DICTIONARY:
+        var difficulty = action.difficulty,
+            word = action.word;
 
-        var currentList = _lodash2.default.shuffle(state[difficulty]);
-        var word = currentList.pop();
-        return (0, _immutabilityHelper2.default)(state, babelHelpers.defineProperty({
-          word: { $set: word }
-        }, difficulty, { $set: currentList }));
+        var dictionary = state[difficulty];
+        return (0, _immutabilityHelper2.default)(state, babelHelpers.defineProperty({}, difficulty, { $set: _lodash2.default.pull(dictionary, word) }));
         return state;
       default:
         return state;
@@ -49064,60 +49059,70 @@ var rootReducer = function rootReducer() {
 };
 
 exports.default = rootReducer;
-}, 793, null, "Charades/js/redux/reducers/words.js");
-__d(/* Charades/js/redux/actions/types.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+}, 455, null, "Charades/js/redux/reducers/dictionary.js");
+__d(/* Charades/js/redux/types.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var SET_DIFFICULTY = exports.SET_DIFFICULTY = 'SET_DIFFICULTY';
-var SET_VISIBILITY = exports.SET_VISIBILITY = 'SET_VISIBILITY';
-var GENERATE_WORD = exports.GENERATE_WORD = 'GENERATE_WORD';
-}, 456, null, "Charades/js/redux/actions/types.js");
-__d(/* Charades/js/redux/defaultState/word-list.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+var SET_WORD = exports.SET_WORD = 'SET_WORD';
+var SET_CURRENT_WORD = exports.SET_CURRENT_WORD = 'SET_CURRENT_WORD';
+var UPDATE_DICTIONARY = exports.UPDATE_DICTIONARY = 'UPDATE_DICTIONARY';
+}, 456, null, "Charades/js/redux/types.js");
+__d(/* Charades/js/redux/reducers/dictionary/word-list.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _easy = require(795     ); // 795 = ./easy
+var _movies = require(458       ); // 458 = ./movies
 
-var _easy2 = babelHelpers.interopRequireDefault(_easy);
+var _movies2 = babelHelpers.interopRequireDefault(_movies);
 
-var _medium = require(796       ); // 796 = ./medium
+var _idioms = require(794       ); // 794 = ./idioms
+
+var _idioms2 = babelHelpers.interopRequireDefault(_idioms);
+
+var _medium = require(459       ); // 459 = ./medium
 
 var _medium2 = babelHelpers.interopRequireDefault(_medium);
 
-var _hard = require(797     ); // 797 = ./hard
+var _hard = require(460     ); // 460 = ./hard
 
 var _hard2 = babelHelpers.interopRequireDefault(_hard);
 
-var _veryHard = require(798          ); // 798 = ./very-hard
+var _veryHard = require(461          ); // 461 = ./very-hard
 
 var _veryHard2 = babelHelpers.interopRequireDefault(_veryHard);
 
 exports.default = {
-  Easy: _easy2.default,
-  Medium: _medium2.default,
-  Hard: [].concat(babelHelpers.toConsumableArray(_hard2.default), babelHelpers.toConsumableArray(_veryHard2.default))
+  movies: _movies2.default,
+  idioms: _idioms2.default,
+  things: [].concat(babelHelpers.toConsumableArray(_hard2.default), babelHelpers.toConsumableArray(_veryHard2.default), [_medium2.default])
 };
-}, 794, null, "Charades/js/redux/defaultState/word-list.js");
-__d(/* Charades/js/redux/defaultState/easy.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+}, 457, null, "Charades/js/redux/reducers/dictionary/word-list.js");
+__d(/* Charades/js/redux/reducers/dictionary/movies.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = ["dance", "skip", "jumping", "jack", "shark", "chicken", "alligator", "chair", "robot", "head", "smile", "baseball", "bird", "happy", "scissors", "cheek", "back", "jump", "drink", "ice", "cream", "cone", "car", "airplane", "clap", "circle", "pillow", "pinch", "kick", "dog", "basketball", "sleep", "camera", "kangaroo", "arm", "eat", "prayer", "elephant", "blink", "doll", "spider", "point", "balloon", "book", "glasses", "stop", "sneeze", "mouth", "draw", "football", "telephone", "pig", "wave", "door", "tail", "turtle", "baby", "ear", "monkey", "hopscotch", "mosquito", "toothbrush", "ring"];
-}, 795, null, "Charades/js/redux/defaultState/easy.js");
-__d(/* Charades/js/redux/defaultState/medium.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+exports.default = ['Spiderman', 'Batman and Robin', 'The Shawshank Redemption', 'Forrest Gump', 'Black Hawk Down', 'The Sixth Sense', 'Pulp Fiction', 'Sweeney Todd', 'Kick-Ass', '21 Jump Street', "Ferris Bueller's Day Off", 'Batman Begins', 'Slumdog Millionaire', 'The Hangover', 'Shrek', 'The Exorcist', "Monster's, Inc.", 'The Bourne Identity', 'Grease', 'The Departed', 'American Pie', 'Shaun of the Dead', 'A Beautiful Mind', 'The Usual Suspects', 'The Matrix', 'American Beauty', 'Mr. and Mrs. Smith', 'The Dark Knight', 'Ice Age', 'Castaway', 'The Hunger Games', 'Inception', 'Apocalypse Now', 'Back to the Future', 'Ted', 'Vertigo', 'Black Swan', 'The Lion King', 'Saw', 'Chinatown', 'Taxi Driver', 'Gone With the Wind', 'Psycho', 'Chicago', 'Catwoman', 'When Harry Met Sally', 'Superbad', 'The Incredibles', 'On the Waterfront', 'Mamma Mia', 'Scary Movie', 'Ben-Hur', 'The Dark Knight', 'Citizen Kane', 'The Shining', 'Die Hard', "Breakfast at Tiffany's", 'King Kong', '50/50', 'The Blair Witch Project', 'Edward Scissorhands', 'Sin City', 'Troy', 'The Hurt Locker', 'Casablanca', 'Memoirs of a Geisha', 'Carrie', 'Alien', 'City of God', 'Se7en', 'Saving Private Ryan', 'The Graduate', 'Australia', 'Donnie Darko', 'Big Fish', 'Beauty and the Beast', 'Despicable Me', 'Clueless', 'Catch Me If You Can', 'Happy Gilmore', 'The Godfather', 'Speed', 'Fargo', 'Juno', 'Raiders of the Lost Ark', 'An Inconvenient Truth', 'Memento', 'The Devil Wears Prada', 'Love Actually', 'Skyfall', "Weekend at Bernie's", 'Rear Window', 'Mean Girls', 'The Grinch', 'The Breakfast Club', 'Freaky Friday', 'Life of Pi', 'Up', 'The Da Vinci Code', 'The Amityville Horror', 'Jaws', 'District 9', 'The Truman Show', 'Toy Story', 'Knocked Up', 'Titanic', 'Goodfellas', 'Inglorious Bastards', 'Finding Nemo', 'Madagascar', 'Star Trek', 'Chocolat', 'Daredevil', 'Bridesmaids', 'Thank you for Smoking', 'Gladiator', 'Buffy the Vampire Slayer', 'Avatar', 'Shutter Island', 'The Silence of the Lambs', 'World War Z'];
+}, 458, null, "Charades/js/redux/reducers/dictionary/movies.js");
+__d(/* Charades/js/redux/reducers/dictionary/idioms.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = ['All bark and no bite', 'Bite your tongue', 'Add fuel to the fire', 'Scared stiff', 'Back to the drawing board', "You can't judge a book by its cover", 'Make a mountain out of a molehill', 'Never bite the hand that feeds you', 'Get over it', 'In the bag', 'Loose cannon', 'A slap on the wrist', 'Method to my madness', 'A chip on your shoulder', 'Hit the road', 'Start from scratch', 'X marks the spot', 'Cost an arm and a leg', 'Grab the bull by the horns', 'One leg in the door', 'Over my dead body', 'Hit the nail on the head', 'Let the cat out of the bag', 'Tie the knot', 'Once in a blue moon', 'Hat trick', 'Jump the gun', 'A taste of your own medicine', 'Something smells fishy', 'Bend over backwards', 'Tongue-in-cheek', 'The squeaky wheel gets the grease', 'Kick the bucket', 'Rule of thumb', 'A fool and his money are easily parted', 'Sick as a dog', 'Pull the wool over your eyes', 'Flip the bird', 'The bigger they are the harder they fall', 'Everything but the kitchen sink', 'Excuse my french', 'Put your foot in your mouth', 'Pulling your leg', 'Curiosity killed the cat', 'On the same page', 'Bull in a china shop', 'Knee jerk reaction', 'Stuck between a rock and a hard place', 'Wear your heart on your sleeve', 'New york minute', 'Water under the bridge', "Can't keep a good dog down", 'Cold feet', 'A dime a dozen', 'Break a leg', "Don't steal my thunder", 'One smart cookie', 'Raining cats and dogs', 'Why the long face?', 'Cut to the chase', "Don't put all your eggs in one basket", 'Keep your chin up', 'Pedal to the metal', 'Two left feet', 'Frog in your throat', 'Piece of cake', 'Throw a fit', 'A penny saved is a penny earned', 'Bouncing off the walls', 'Go for broke', "Finger lickin' good", 'Pipe down', 'Bite off more than you can chew', 'Knock on wood', 'Gut feeling', 'A piece of cake', 'Caught red-handed', 'Head over heels in love', 'Go out on a limb', 'The best of both worlds', 'All Greek to me', 'Over the top', 'Take a hike', 'Green with envy', 'You are what you eat', 'Wake up on the wrong side of the bed', 'When pigs fly', 'A bird in the hand is worth two in the bush', 'Hold your horses', 'Drive me up the wall', 'A fly on the wall', 'Feeling under the weather', 'Up a creek without a paddle', 'Eat my words', 'Off on the wrong foot', 'Spitting image', 'The whole nine yards', 'Practice makes perfect', 'Out of this world', 'In the same boat'];
+}, 794, null, "Charades/js/redux/reducers/dictionary/idioms.js");
+__d(/* Charades/js/redux/reducers/dictionary/medium.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = ["ping pong", "snowball", "roof", "fly", "fang ", "bicycle", "bear ", "cape ", "puppet", "piano ", "lipstick ", "salute", "hula hoop ", "penguin ", "banana peel", "whisper ", "popsicle ", "Frankenstein", "earthquake ", "yo-yo ", "road", "rain ", "alarm clock ", "dog leash", "chop ", "pajamas ", "slam dunk", "fiddle ", "seashell ", "jog", "seesaw ", "nap ", "cheerleader", "blind ", "beg ", "shopping ", "cart", "Michael Jackson ", "limbo ", "newspaper", "twist ", "rhinoceros ", "cow", "tickle ", "fetch ", "violin", "cage ", "cello ", "braid", "skateboard ", "stairs ", "trumpet", "mop ", "shovel ", "money", "soap ", "saddle ", "wink", "tree ", "Spider Man ", "think"];
-}, 796, null, "Charades/js/redux/defaultState/medium.js");
-__d(/* Charades/js/redux/defaultState/hard.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+}, 459, null, "Charades/js/redux/reducers/dictionary/medium.js");
+__d(/* Charades/js/redux/reducers/dictionary/hard.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = ["peck", "windmill", "party", "dentist", "lawn", "mower", "softball", "wig", "stain", "cuff", "sunburn", "funny", "sheet", "hair", "dryer", "nightmare", "iPad", "shadow", "wax", "fog", "sip", "bathroom", "scale", "taxi", "pizza", "sand", "huddle", "cowboy", "ticket", "doghouse", "stiff", "knot", "president", "owl", "wrench", "story", "whisk", "quicksand", "spine", "chess", "artist", "vest", "gingerbread", "man", "spider", "web", "bob", "lung", "washing", "machine", "oar", "torch", "eraser", "mini", "blinds", "mouse", "trap", "swordfish", "jar", "cramp", "flamingo", "cast", "honk", "mirror", "business", "trip", "chalk", "gym", "volcano"];
-}, 797, null, "Charades/js/redux/defaultState/hard.js");
-__d(/* Charades/js/redux/defaultState/very-hard.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+}, 460, null, "Charades/js/redux/reducers/dictionary/hard.js");
+__d(/* Charades/js/redux/reducers/dictionary/very-hard.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = ["Will Smith", "defect", "standing ovation", "flag", "retaliate", "mascot", "shipwreck", "jet lag", "comfort zone", "alphabetize", "application", "college", "lifestyle", "level", "invitation", "applesauce", "crumb", "loyalty", "corduroy", "fizz", "shrink ray", "Game plan", "personal bubble", "déjà vu", "Olympian ", "oil ", "procrastinate", "criticize ", "space-time continuum ", "ergonomic", "regret ", "teenager ", "organize", "baby monitor ", "Beethoven ", "streamline", "satellite ", "gratitude ", "journal", "a cappella ", "beanstalk ", "explore", "mine shaft ", "dismantle ", "weed killer", "tachometer ", "unemployed ", "portfolio", "pomp ", "evolution ", "apathy", "advertise ", "roundabout ", "sandbox", "conversation ", "negotiate ", "Zamboni", "silhouette ", "aisle ", "pendulum"];
-}, 798, null, "Charades/js/redux/defaultState/very-hard.js");
+exports.default = ["defect", "standing ovation", "flag", "retaliate", "mascot", "shipwreck", "jet lag", "comfort zone", "alphabetize", "application", "college", "lifestyle", "level", "invitation", "applesauce", "crumb", "loyalty", "corduroy", "fizz", "shrink ray", "Game plan", "personal bubble", "déjà vu", "Olympian ", "oil ", "procrastinate", "criticize ", "space-time continuum ", "ergonomic", "regret ", "teenager ", "organize", "baby monitor ", "Beethoven ", "streamline", "satellite ", "gratitude ", "journal", "a cappella ", "beanstalk ", "explore", "mine shaft ", "dismantle ", "weed killer", "tachometer ", "unemployed ", "portfolio", "pomp ", "evolution ", "apathy", "advertise ", "roundabout ", "sandbox", "conversation ", "negotiate ", "Zamboni", "silhouette ", "aisle ", "pendulum"];
+}, 461, null, "Charades/js/redux/reducers/dictionary/very-hard.js");
 __d(/* immutability-helper/index.js */function(global, require, module, exports) {var invariant = require(410        ); // 410 = invariant
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -55887,54 +55892,43 @@ __d(/* lodash/lodash.js */function(global, require, module, exports) {/**
     }
 }).call(this);
 }, 463, null, "lodash/lodash.js");
-__d(/* Charades/js/components/Game/GameContainer.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+__d(/* Charades/js/redux/reducers/ui.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require(12     ); // 12 = react
+var _types = require(456       ); // 456 = ../types
 
-var _react2 = babelHelpers.interopRequireDefault(_react);
+var _immutabilityHelper = require(462                  ); // 462 = immutability-helper
 
-var _reactRedux = require(404          ); // 404 = react-redux
+var _immutabilityHelper2 = babelHelpers.interopRequireDefault(_immutabilityHelper);
 
-var _Game = require(465     ); // 465 = ./Game
-
-var _Game2 = babelHelpers.interopRequireDefault(_Game);
-
-var Anatomy = function (_Component) {
-  babelHelpers.inherits(Anatomy, _Component);
-
-  function Anatomy(props) {
-    babelHelpers.classCallCheck(this, Anatomy);
-
-    var _this = babelHelpers.possibleConstructorReturn(this, (Anatomy.__proto__ || Object.getPrototypeOf(Anatomy)).call(this, props));
-
-    _this.state = { isVisible: false };
-    return _this;
-  }
-
-  babelHelpers.createClass(Anatomy, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(_Game2.default, {
-        currentDifficulty: this.props.currentDifficulty,
-        isVisible: this.state.isVisible,
-        generateWord: this.generateWord,
-        setDifficulty: this.setDifficulty
-      });
-    }
-  }]);
-  return Anatomy;
-}(_react.Component);
-
-var mapStateToProps = function mapStateToProps(state) {
-  return {
-    word: state.charades.word
-  };
+var DEFAULT_STATE = {
+  difficulty: 'Things',
+  isVisible: false
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(Anatomy);
-}, 464, null, "Charades/js/components/Game/GameContainer.js");
+exports.default = function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATE;
+  var action = arguments[1];
+
+  if (action) {
+    switch (action.type) {
+      case _types.SET_DIFFICULTY:
+        return (0, _immutabilityHelper2.default)(state, {
+          difficulty: { $set: action.difficulty },
+          isVisible: { $set: false }
+        });
+      case _types.SET_CURRENT_WORD:
+        return (0, _immutabilityHelper2.default)(state, {
+          word: { $set: action.word },
+          isVisible: { $set: true }
+        });
+      default:
+        return state;
+    }
+  }
+};
+}, 464, null, "Charades/js/redux/reducers/ui.js");
 __d(/* Charades/js/components/Game/Game.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -55957,11 +55951,11 @@ var _ShowWorld2 = babelHelpers.interopRequireDefault(_ShowWorld);
 
 var _nativeBase = require(476          ); // 476 = native-base
 
-var _DifficultyButton = require(789                 ); // 789 = ./DifficultyButton
+var _DifficultyButton = require(790                 ); // 790 = ./DifficultyButton
 
 var _DifficultyButton2 = babelHelpers.interopRequireDefault(_DifficultyButton);
 
-var _GenerateWord = require(791             ); // 791 = ./GenerateWord
+var _GenerateWord = require(792             ); // 792 = ./GenerateWord
 
 var _GenerateWord2 = babelHelpers.interopRequireDefault(_GenerateWord);
 
@@ -55976,8 +55970,6 @@ var Game = function (_Component) {
   babelHelpers.createClass(Game, [{
     key: 'render',
     value: function render() {
-      var currentDifficulty = this.props.currentDifficulty;
-
       return _react2.default.createElement(
         _nativeBase.Container,
         { theme: _baseTheme2.default, style: _styles2.default.container },
@@ -55987,15 +55979,18 @@ var Game = function (_Component) {
           _react2.default.createElement(
             _nativeBase.Title,
             { style: _styles2.default.headerTitle },
-            currentDifficulty,
-            ' Words'
+            'Charades'
           )
         ),
         _react2.default.createElement(
           _nativeBase.View,
-          { style: _styles2.default.mainView },
+          { style: _styles2.default.main },
           _react2.default.createElement(_ShowWorld2.default, null),
-          _react2.default.createElement(_GenerateWord2.default, null)
+          _react2.default.createElement(
+            _nativeBase.View,
+            { style: _styles2.default.generateWord },
+            _react2.default.createElement(_GenerateWord2.default, null)
+          )
         ),
         _react2.default.createElement(
           _nativeBase.Footer,
@@ -56003,9 +55998,9 @@ var Game = function (_Component) {
           _react2.default.createElement(
             _nativeBase.FooterTab,
             null,
-            _react2.default.createElement(_DifficultyButton2.default, { difficulty: 'Easy' }),
-            _react2.default.createElement(_DifficultyButton2.default, { difficulty: 'Medium' }),
-            _react2.default.createElement(_DifficultyButton2.default, { difficulty: 'Hard' })
+            _react2.default.createElement(_DifficultyButton2.default, { difficulty: 'Things' }),
+            _react2.default.createElement(_DifficultyButton2.default, { difficulty: 'Movies' }),
+            _react2.default.createElement(_DifficultyButton2.default, { difficulty: 'Idioms' })
           )
         )
       );
@@ -58109,11 +58104,15 @@ exports.default = {
   container: {
     backgroundColor: '#FBFAFA'
   },
-  mainView: {
+  main: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  generateWord: {
+    position: 'absolute',
+    bottom: 100
   },
   headerTitle: {
     marginTop: 10
@@ -58136,6 +58135,8 @@ var _style2 = babelHelpers.interopRequireDefault(_style);
 
 var _reactRedux = require(404          ); // 404 = react-redux
 
+var _selectors = require(789                       ); // 789 = ../../../redux/selectors
+
 var ShowWord = function (_Component) {
   babelHelpers.inherits(ShowWord, _Component);
 
@@ -58151,7 +58152,7 @@ var ShowWord = function (_Component) {
           word = _props.word,
           isVisible = _props.isVisible;
 
-      var text = isVisible ? word : "Tap For a Word";
+      var text = isVisible ? word : 'Tap For a Word';
       return _react2.default.createElement(
         _nativeBase.Text,
         { style: _style2.default },
@@ -58170,8 +58171,8 @@ ShowWord.propTypes = {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    word: state.charades.word,
-    isVisible: state.charades.isVisible
+    word: (0, _selectors.getCurrentWord)(state) || 'More words coming soon',
+    isVisible: (0, _selectors.getVisibility)(state)
   };
 };
 
@@ -88288,6 +88289,33 @@ exports.default = {
   marginBottom: 100
 };
 }, 788, null, "Charades/js/components/Game/ShowWorld/style.js");
+__d(/* Charades/js/redux/selectors.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getGeneratedWord = exports.getVisibility = exports.getCurrentWord = exports.getDifficulty = undefined;
+
+var _lodash = require(463     ); // 463 = lodash
+
+var _lodash2 = babelHelpers.interopRequireDefault(_lodash);
+
+var getDifficulty = exports.getDifficulty = function getDifficulty(_ref) {
+  var ui = _ref.ui;
+  return ui.difficulty;
+};
+var getCurrentWord = exports.getCurrentWord = function getCurrentWord(_ref2) {
+  var ui = _ref2.ui;
+  return ui.word;
+};
+var getVisibility = exports.getVisibility = function getVisibility(_ref3) {
+  var ui = _ref3.ui;
+  return ui.isVisible;
+};
+var getGeneratedWord = exports.getGeneratedWord = function getGeneratedWord(_ref4) {
+  var ui = _ref4.ui,
+      dictionary = _ref4.dictionary;
+  return _lodash2.default.sample(dictionary[ui.difficulty]);
+};
+}, 789, null, "Charades/js/redux/selectors.js");
 __d(/* Charades/js/components/Game/DifficultyButton/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -88300,16 +88328,16 @@ var _nativeBase = require(476          ); // 476 = native-base
 
 var _reactRedux = require(404          ); // 404 = react-redux
 
-var _charades = require(790                              ); // 790 = ../../../redux/actions/charades
+var _actionsCreators = require(791                              ); // 791 = ../../../redux/actions-creators
 
 var icon = function icon(difficulty) {
   switch (difficulty) {
-    case "Easy":
-      return "ios-stopwatch-outline";
-    case "Medium":
-      return "ios-speedometer-outline";
-    case "Hard":
-      return "ios-trophy-outline";
+    case 'Things':
+      return 'ios-stopwatch-outline';
+    case 'Movies':
+      return 'ios-speedometer-outline';
+    case 'Idioms':
+      return 'ios-trophy-outline';
   }
 };
 
@@ -88330,11 +88358,9 @@ var DifficultyButton = function (_Component) {
     value: function setDifficulty() {
       var _props = this.props,
           setDifficulty = _props.setDifficulty,
-          difficulty = _props.difficulty,
-          setVisibility = _props.setVisibility;
+          difficulty = _props.difficulty;
 
       setDifficulty(difficulty);
-      setVisibility(false);
     }
   }, {
     key: 'render',
@@ -88345,9 +88371,11 @@ var DifficultyButton = function (_Component) {
 
       return _react2.default.createElement(
         _nativeBase.Button,
-        { title: difficulty,
+        {
+          title: difficulty,
           active: currentDifficulty === difficulty,
-          onPress: this.setDifficulty },
+          onPress: this.setDifficulty
+        },
         _react2.default.createElement(
           _nativeBase.Text,
           null,
@@ -88363,59 +88391,57 @@ var DifficultyButton = function (_Component) {
 DifficultyButton.propTypes = {
   setDifficulty: _react2.default.PropTypes.func,
   difficulty: _react2.default.PropTypes.string,
-  currentDifficulty: _react2.default.PropTypes.string,
-  setVisibility: _react2.default.PropTypes.func
+  currentDifficulty: _react2.default.PropTypes.string
 };
 
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    currentDifficulty: state.charades.difficulty
+    currentDifficulty: state.ui.difficulty
   };
 };
 
 var bindAction = function bindAction(dispatch) {
   return {
     setDifficulty: function setDifficulty(difficulty) {
-      return dispatch((0, _charades.setDifficulty)(difficulty));
-    },
-    setVisibility: function setVisibility(visibility) {
-      return dispatch((0, _charades.setVisibility)(visibility));
+      return dispatch((0, _actionsCreators.setDifficulty)(difficulty));
     }
   };
 };
 exports.default = (0, _reactRedux.connect)(mapStateToProps, bindAction)(DifficultyButton);
-}, 789, null, "Charades/js/components/Game/DifficultyButton/index.js");
-__d(/* Charades/js/redux/actions/charades.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+}, 790, null, "Charades/js/components/Game/DifficultyButton/index.js");
+__d(/* Charades/js/redux/actions-creators.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setDifficulty = setDifficulty;
-exports.generateWord = generateWord;
-exports.setVisibility = setVisibility;
+exports.updateDictionary = exports.setCurrentWord = exports.setDifficulty = undefined;
 
 var _types = require(456      ); // 456 = ./types
 
-function setDifficulty(difficulty) {
+var setDifficulty = exports.setDifficulty = function setDifficulty(difficulty) {
   return {
     type: _types.SET_DIFFICULTY,
     difficulty: difficulty
   };
-}
+};
 
-function generateWord(difficulty) {
+var setCurrentWord = exports.setCurrentWord = function setCurrentWord(word) {
   return {
-    type: _types.GENERATE_WORD,
-    difficulty: difficulty
+    type: _types.SET_CURRENT_WORD,
+    word: word
   };
-}
+};
 
-function setVisibility(visibility) {
+var updateDictionary = exports.updateDictionary = function updateDictionary(_ref) {
+  var difficulty = _ref.difficulty,
+      word = _ref.word;
+
   return {
-    type: _types.SET_VISIBILITY,
-    visibility: visibility
+    type: _types.UPDATE_DICTIONARY,
+    difficulty: difficulty,
+    word: word
   };
-}
-}, 790, null, "Charades/js/redux/actions/charades.js");
+};
+}, 791, null, "Charades/js/redux/actions-creators.js");
 __d(/* Charades/js/components/Game/GenerateWord/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -88426,13 +88452,15 @@ var _react2 = babelHelpers.interopRequireDefault(_react);
 
 var _reactRedux = require(404          ); // 404 = react-redux
 
-var _charades = require(790                              ); // 790 = ../../../redux/actions/charades
+var _pluralize = require(795        ); // 795 = pluralize
+
+var _pluralize2 = babelHelpers.interopRequireDefault(_pluralize);
+
+var _actionsCreators = require(791                              ); // 791 = ../../../redux/actions-creators
+
+var _selectors = require(789                       ); // 789 = ../../../redux/selectors
 
 var _nativeBase = require(476          ); // 476 = native-base
-
-var _styles = require(792       ); // 792 = ./styles
-
-var _styles2 = babelHelpers.interopRequireDefault(_styles);
 
 var Container = function (_Component) {
   babelHelpers.inherits(Container, _Component);
@@ -88450,26 +88478,25 @@ var Container = function (_Component) {
     key: 'generateWord',
     value: function generateWord() {
       var _props = this.props,
-          currentDifficulty = _props.currentDifficulty,
-          setVisibility = _props.setVisibility,
-          generateWord = _props.generateWord;
+          difficulty = _props.difficulty,
+          dispatch = _props.dispatch;
 
-      generateWord(currentDifficulty);
-      setVisibility(true);
+      var word = this.props.generateWord();
+      dispatch((0, _actionsCreators.setCurrentWord)(word));
+      dispatch((0, _actionsCreators.updateDictionary)({ difficulty: difficulty, word: word }));
     }
   }, {
     key: 'render',
     value: function render() {
+      var generateText = _pluralize2.default.singular(this.props.difficulty);
       return _react2.default.createElement(
         _nativeBase.Button,
-        { primary: true, large: true,
-          title: 'Generate Word',
-          onPress: this.generateWord,
-          style: _styles2.default },
+        { large: true, onPress: this.generateWord, style: { alignSelf: 'center' } },
         _react2.default.createElement(
           _nativeBase.Text,
           null,
-          'Generate Phrase'
+          'Generate ',
+          generateText
         )
       );
     }
@@ -88478,38 +88505,174 @@ var Container = function (_Component) {
 }(_react.Component);
 
 Container.propTypes = {
-  generateWord: _react2.default.PropTypes.func,
+  updateDictionary: _react2.default.PropTypes.func,
   difficulty: _react2.default.PropTypes.string
 };
 
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    currentDifficulty: state.charades.difficulty
+    difficulty: (0, _selectors.getDifficulty)(state),
+    generateWord: function generateWord() {
+      return (0, _selectors.getGeneratedWord)(state);
+    }
   };
 };
 
 var bindAction = function bindAction(dispatch) {
-  return {
-    generateWord: function generateWord(difficulty) {
-      return dispatch((0, _charades.generateWord)(difficulty));
-    },
-    setVisibility: function setVisibility(visibility) {
-      return dispatch((0, _charades.setVisibility)(visibility));
-    }
-  };
+  return { dispatch: dispatch };
 };
+
 exports.default = (0, _reactRedux.connect)(mapStateToProps, bindAction)(Container);
-}, 791, null, "Charades/js/components/Game/GenerateWord/index.js");
-__d(/* Charades/js/components/Game/GenerateWord/styles.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
-  value: true
+}, 792, null, "Charades/js/components/Game/GenerateWord/index.js");
+__d(/* pluralize/pluralize.js */function(global, require, module, exports) {
+
+(function (root, pluralize) {
+  if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
+    module.exports = pluralize();
+  } else if (typeof define === 'function' && define.amd) {
+    define(function () {
+      return pluralize();
+    });
+  } else {
+    root.pluralize = pluralize();
+  }
+})(this, function () {
+  var pluralRules = [];
+  var singularRules = [];
+  var uncountables = {};
+  var irregularPlurals = {};
+  var irregularSingles = {};
+
+  function toTitleCase(str) {
+    return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
+  }
+
+  function sanitizeRule(rule) {
+    if (typeof rule === 'string') {
+      return new RegExp('^' + rule + '$', 'i');
+    }
+
+    return rule;
+  }
+
+  function restoreCase(word, token) {
+    if (word === token) {
+      return token;
+    }
+
+    if (word === word.toUpperCase()) {
+      return token.toUpperCase();
+    }
+
+    if (word[0] === word[0].toUpperCase()) {
+      return toTitleCase(token);
+    }
+
+    return token.toLowerCase();
+  }
+
+  function interpolate(str, args) {
+    return str.replace(/\$(\d{1,2})/g, function (match, index) {
+      return args[index] || '';
+    });
+  }
+
+  function sanitizeWord(token, word, collection) {
+    if (!token.length || uncountables.hasOwnProperty(token)) {
+      return word;
+    }
+
+    var len = collection.length;
+
+    while (len--) {
+      var rule = collection[len];
+
+      if (rule[0].test(word)) {
+        return word.replace(rule[0], function (match, index, word) {
+          var result = interpolate(rule[1], arguments);
+
+          if (match === '') {
+            return restoreCase(word[index - 1], result);
+          }
+
+          return restoreCase(match, result);
+        });
+      }
+    }
+
+    return word;
+  }
+
+  function replaceWord(replaceMap, keepMap, rules) {
+    return function (word) {
+      var token = word.toLowerCase();
+
+      if (keepMap.hasOwnProperty(token)) {
+        return restoreCase(word, token);
+      }
+
+      if (replaceMap.hasOwnProperty(token)) {
+        return restoreCase(word, replaceMap[token]);
+      }
+
+      return sanitizeWord(token, word, rules);
+    };
+  }
+
+  function pluralize(word, count, inclusive) {
+    var pluralized = count === 1 ? pluralize.singular(word) : pluralize.plural(word);
+
+    return (inclusive ? count + ' ' : '') + pluralized;
+  }
+
+  pluralize.plural = replaceWord(irregularSingles, irregularPlurals, pluralRules);
+
+  pluralize.singular = replaceWord(irregularPlurals, irregularSingles, singularRules);
+
+  pluralize.addPluralRule = function (rule, replacement) {
+    pluralRules.push([sanitizeRule(rule), replacement]);
+  };
+
+  pluralize.addSingularRule = function (rule, replacement) {
+    singularRules.push([sanitizeRule(rule), replacement]);
+  };
+
+  pluralize.addUncountableRule = function (word) {
+    if (typeof word === 'string') {
+      uncountables[word.toLowerCase()] = true;
+      return;
+    }
+
+    pluralize.addPluralRule(word, '$0');
+    pluralize.addSingularRule(word, '$0');
+  };
+
+  pluralize.addIrregularRule = function (single, plural) {
+    plural = plural.toLowerCase();
+    single = single.toLowerCase();
+
+    irregularSingles[single] = plural;
+    irregularPlurals[plural] = single;
+  };
+
+  [['I', 'we'], ['me', 'us'], ['he', 'they'], ['she', 'they'], ['them', 'them'], ['myself', 'ourselves'], ['yourself', 'yourselves'], ['itself', 'themselves'], ['herself', 'themselves'], ['himself', 'themselves'], ['themself', 'themselves'], ['is', 'are'], ['was', 'were'], ['has', 'have'], ['this', 'these'], ['that', 'those'], ['echo', 'echoes'], ['dingo', 'dingoes'], ['volcano', 'volcanoes'], ['tornado', 'tornadoes'], ['torpedo', 'torpedoes'], ['genus', 'genera'], ['viscus', 'viscera'], ['stigma', 'stigmata'], ['stoma', 'stomata'], ['dogma', 'dogmata'], ['lemma', 'lemmata'], ['schema', 'schemata'], ['anathema', 'anathemata'], ['ox', 'oxen'], ['axe', 'axes'], ['die', 'dice'], ['yes', 'yeses'], ['foot', 'feet'], ['eave', 'eaves'], ['goose', 'geese'], ['tooth', 'teeth'], ['quiz', 'quizzes'], ['human', 'humans'], ['proof', 'proofs'], ['carve', 'carves'], ['valve', 'valves'], ['looey', 'looies'], ['thief', 'thieves'], ['groove', 'grooves'], ['pickaxe', 'pickaxes'], ['whiskey', 'whiskies']].forEach(function (rule) {
+    return pluralize.addIrregularRule(rule[0], rule[1]);
+  });
+
+  [[/s?$/i, 's'], [/[^\u0000-\u007F]$/i, '$0'], [/([^aeiou]ese)$/i, '$1'], [/(ax|test)is$/i, '$1es'], [/(alias|[^aou]us|tlas|gas|ris)$/i, '$1es'], [/(e[mn]u)s?$/i, '$1s'], [/([^l]ias|[aeiou]las|[emjzr]as|[iu]am)$/i, '$1'], [/(alumn|syllab|octop|vir|radi|nucle|fung|cact|stimul|termin|bacill|foc|uter|loc|strat)(?:us|i)$/i, '$1i'], [/(alumn|alg|vertebr)(?:a|ae)$/i, '$1ae'], [/(seraph|cherub)(?:im)?$/i, '$1im'], [/(her|at|gr)o$/i, '$1oes'], [/(agend|addend|millenni|dat|extrem|bacteri|desiderat|strat|candelabr|errat|ov|symposi|curricul|automat|quor)(?:a|um)$/i, '$1a'], [/(apheli|hyperbat|periheli|asyndet|noumen|phenomen|criteri|organ|prolegomen|hedr|automat)(?:a|on)$/i, '$1a'], [/sis$/i, 'ses'], [/(?:(kni|wi|li)fe|(ar|l|ea|eo|oa|hoo)f)$/i, '$1$2ves'], [/([^aeiouy]|qu)y$/i, '$1ies'], [/([^ch][ieo][ln])ey$/i, '$1ies'], [/(x|ch|ss|sh|zz)$/i, '$1es'], [/(matr|cod|mur|sil|vert|ind|append)(?:ix|ex)$/i, '$1ices'], [/(m|l)(?:ice|ouse)$/i, '$1ice'], [/(pe)(?:rson|ople)$/i, '$1ople'], [/(child)(?:ren)?$/i, '$1ren'], [/eaux$/i, '$0'], [/m[ae]n$/i, 'men'], ['thou', 'you']].forEach(function (rule) {
+    return pluralize.addPluralRule(rule[0], rule[1]);
+  });
+
+  [[/s$/i, ''], [/(ss)$/i, '$1'], [/((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)(?:sis|ses)$/i, '$1sis'], [/(^analy)(?:sis|ses)$/i, '$1sis'], [/(wi|kni|(?:after|half|high|low|mid|non|night|[^\w]|^)li)ves$/i, '$1fe'], [/(ar|(?:wo|[ae])l|[eo][ao])ves$/i, '$1f'], [/ies$/i, 'y'], [/\b([pl]|zomb|(?:neck|cross)?t|coll|faer|food|gen|goon|group|lass|talk|goal|cut)ies$/i, '$1ie'], [/\b(mon|smil)ies$/i, '$1ey'], [/(m|l)ice$/i, '$1ouse'], [/(seraph|cherub)im$/i, '$1'], [/(x|ch|ss|sh|zz|tto|go|cho|alias|[^aou]us|tlas|gas|(?:her|at|gr)o|ris)(?:es)?$/i, '$1'], [/(e[mn]u)s?$/i, '$1'], [/(movie|twelve)s$/i, '$1'], [/(cris|test|diagnos)(?:is|es)$/i, '$1is'], [/(alumn|syllab|octop|vir|radi|nucle|fung|cact|stimul|termin|bacill|foc|uter|loc|strat)(?:us|i)$/i, '$1us'], [/(agend|addend|millenni|dat|extrem|bacteri|desiderat|strat|candelabr|errat|ov|symposi|curricul|quor)a$/i, '$1um'], [/(apheli|hyperbat|periheli|asyndet|noumen|phenomen|criteri|organ|prolegomen|hedr|automat)a$/i, '$1on'], [/(alumn|alg|vertebr)ae$/i, '$1a'], [/(cod|mur|sil|vert|ind)ices$/i, '$1ex'], [/(matr|append)ices$/i, '$1ix'], [/(pe)(rson|ople)$/i, '$1rson'], [/(child)ren$/i, '$1'], [/(eau)x?$/i, '$1'], [/men$/i, 'man']].forEach(function (rule) {
+    return pluralize.addSingularRule(rule[0], rule[1]);
+  });
+
+  ['advice', 'adulthood', 'agenda', 'aid', 'alcohol', 'ammo', 'athletics', 'bison', 'blood', 'bream', 'buffalo', 'butter', 'carp', 'cash', 'chassis', 'chess', 'clothing', 'commerce', 'cod', 'cooperation', 'corps', 'digestion', 'debris', 'diabetes', 'energy', 'equipment', 'elk', 'excretion', 'expertise', 'flounder', 'fun', 'gallows', 'garbage', 'graffiti', 'headquarters', 'health', 'herpes', 'highjinks', 'homework', 'housework', 'information', 'jeans', 'justice', 'kudos', 'labour', 'literature', 'machinery', 'mackerel', 'mail', 'media', 'mews', 'moose', 'music', 'news', 'pike', 'plankton', 'pliers', 'pollution', 'premises', 'rain', 'research', 'rice', 'salmon', 'scissors', 'series', 'sewage', 'shambles', 'shrimp', 'species', 'staff', 'swine', 'trout', 'traffic', 'transporation', 'tuna', 'wealth', 'welfare', 'whiting', 'wildebeest', 'wildlife', 'you', /pox$/i, /ois$/i, /deer$/i, /fish$/i, /sheep$/i, /measles$/i, /[^aeiou]ese$/i].forEach(pluralize.addUncountableRule);
+
+  return pluralize;
 });
-exports.default = {
-  alignSelf: 'center',
-  marginTop: 20,
-  marginBottom: 20
-};
-}, 792, null, "Charades/js/components/Game/GenerateWord/styles.js");
+}, 795, null, "pluralize/pluralize.js");
 ;require(216);
 ;require(0);
 //# sourceMappingURL=index.ios.map

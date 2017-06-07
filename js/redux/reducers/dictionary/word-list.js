@@ -1,10 +1,11 @@
-import easy from './easy';
+import movies from './movies';
+import idioms from './idioms';
 import medium from './medium';
 import hard from './hard';
 import veryHard from './very-hard';
 
 export default {
-  Easy: easy,
-  Medium: medium ,
-  Hard: [...hard, ...veryHard]
-}
+  Movies: movies,
+  Idioms: idioms,
+  Things: [...hard, ...veryHard, medium]
+};

@@ -8,10 +8,10 @@ class ShowWord extends Component {
     word: React.PropTypes.string,
     isVisible: React.PropTypes.bool
   };
-  
+
   render() {
-    const {word, isVisible}= this.props;
-    const text = isVisible ? word : "Tap For a Word";
+    const {word, isVisible} = this.props;
+    const text = isVisible ? word : 'Tap For a Word';
     return (
       <Text style={style}>
         {text}
@@ -21,10 +21,10 @@ class ShowWord extends Component {
 }
 
 const mapStateToProps = state => {
-  return ({
-    word: getCurrentWord(state),
+  return {
+    word: getCurrentWord(state) || 'Tap For More Words',
     isVisible: getVisibility(state)
-  });
+  };
 };
 
 export default connect(mapStateToProps)(ShowWord);

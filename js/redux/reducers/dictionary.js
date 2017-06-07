@@ -7,9 +7,9 @@ import update from 'immutability-helper';
 import _ from 'lodash';
 
 const DEFAULT_STATE = {
-  Easy: wordList.Easy,
-  Medium: wordList.Medium,
-  Hard: wordList.Hard
+  Movies: [...wordList.Movies],
+  Idioms: [...wordList.Idioms],
+  Things: [...wordList.Things]
 };
 
 const rootReducer = (state = DEFAULT_STATE, action) => {
@@ -17,9 +17,10 @@ const rootReducer = (state = DEFAULT_STATE, action) => {
     switch (action.type) {
       case UPDATE_DICTIONARY:
         const {difficulty, word} = action;
-        const dictionary = state[difficulty];
-        return update(state,{
-          [difficulty]: {$set:_.pull(dictionary, word)}
+        const remainingWords = state[difficulty];
+        const dictionary = remainingWords.length ? remainingWords : [...wordList[difficulty]];
+        return update(state, {
+          [difficulty]: {$set: _.pull(dictionary, word)}
         });
         return state;
       default:
