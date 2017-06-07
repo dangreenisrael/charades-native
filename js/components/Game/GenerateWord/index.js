@@ -1,31 +1,18 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import pluralize from 'pluralize';
-import {setCurrentWord, updateDictionary} from '../../../redux/actions-creators';
-import {getDifficulty, getGeneratedWord} from '../../../redux/selectors';
+import {generateWordAndSetAsCurrent} from '../../../redux/thunks';
+import {getCategory} from '../../../redux/selectors';
 import {Text, Button} from 'native-base';
 
-class Container extends Component {
-  static propTypes = {
-    updateDictionary: React.PropTypes.func,
-    difficulty: React.PropTypes.string
-  };
-  constructor(props) {
-    super(props);
-    this.generateWord = this.generateWord.bind(this);
-  }
-  generateWord() {
-    const {difficulty, dispatch} = this.props;
-    const word = this.props.generateWord();
-    dispatch(setCurrentWord(word));
-    dispatch(updateDictionary({difficulty, word}));
-  }
+export class GenerateWord extends Component {
   render() {
-    const generateText = pluralize.singular(this.props.difficulty);
+    const category = pluralize.singular(this.props.category);
+    const {generateWord} = this.props;
     return (
-      <Button large onPress={this.generateWord} style={{alignSelf: 'center'}}>
+      <Button title="Generator" large onPress={generateWord} style={{alignSelf: 'center'}}>
         <Text>
-          Generate {generateText}
+          Generate {category}
         </Text>
       </Button>
     );
@@ -33,10 +20,16 @@ class Container extends Component {
 }
 
 const mapStateToProps = state => ({
-  difficulty: getDifficulty(state),
-  generateWord: () => getGeneratedWord(state)
+  category: getCategory(state)
 });
 
-const bindAction = dispatch => ({dispatch});
+const bindActionToProps = dispatch => ({
+  generateWord: () => dispatch(generateWordAndSetAsCurrent())
+});
 
-export default connect(mapStateToProps, bindAction)(Container);
+GenerateWord.propTypes = {
+  generateWordAndSetAsCurrent: React.PropTypes.func,
+  category: React.PropTypes.string
+};
+
+export default connect(mapStateToProps, bindActionToProps)(GenerateWord);

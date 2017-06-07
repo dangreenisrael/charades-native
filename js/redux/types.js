@@ -1,4 +1,3 @@
-export const SET_DIFFICULTY = 'SET_DIFFICULTY';
-export const SET_WORD = 'SET_WORD';
+export const SET_CATEGORY = 'SET_CATEGORY';
 export const SET_CURRENT_WORD = 'SET_CURRENT_WORD';
 export const UPDATE_DICTIONARY = 'UPDATE_DICTIONARY';

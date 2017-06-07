@@ -1,9 +1,9 @@
-import {SET_DIFFICULTY, UPDATE_DICTIONARY, SET_CURRENT_WORD} from './types';
+import {SET_CATEGORY, UPDATE_DICTIONARY, SET_CURRENT_WORD} from './types';
 
-export const setDifficulty = difficulty => {
+export const setCategory = category => {
   return {
-    type: SET_DIFFICULTY,
-    difficulty: difficulty
+    type: SET_CATEGORY,
+    category: category
   };
 };
 
@@ -14,10 +14,10 @@ export const setCurrentWord = word => {
   };
 };
 
-export const updateDictionary = ({difficulty, word}) => {
+export const updateDictionary = ({category, word}) => {
   return {
     type: UPDATE_DICTIONARY,
-    difficulty: difficulty,
+    category: category,
     word: word
   };
 };

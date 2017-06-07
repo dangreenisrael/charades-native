@@ -3,7 +3,7 @@ import myTheme from '../../themes/base-theme';
 import styles from './styles';
 import ShowWord from './ShowWorld';
 import {View, Container, Header, Title, Footer, FooterTab} from 'native-base';
-import DifficultyButton from './DifficultyButton';
+import CategorySelector from './CategorySelector';
 import GenerateWord from './GenerateWord';
 class Game extends Component {
   render() {
@@ -20,9 +20,9 @@ class Game extends Component {
         </View>
         <Footer>
           <FooterTab>
-            <DifficultyButton difficulty="Things" />
-            <DifficultyButton difficulty="Movies" />
-            <DifficultyButton difficulty="Idioms" />
+            <CategorySelector category="Things" />
+            <CategorySelector category="Movies" />
+            <CategorySelector category="Idioms" />
           </FooterTab>
         </Footer>
       </Container>

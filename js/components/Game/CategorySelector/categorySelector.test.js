@@ -1,12 +1,12 @@
 import 'react-native';
 import renderer from 'react-test-renderer';
 import React from 'react';
-import {DifficultyButton} from '.';
+import {CategoryButton} from '.';
 
 test('renders correctly', () => {
   const mock = jest.fn();
   const tree = renderer
-    .create(<DifficultyButton difficulty="Movies" currentDifficulty="Thing" setDifficulty={mock} />)
+    .create(<CategoryButton category="Movies" currentCategory="Thing" setCategory={mock} />)
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

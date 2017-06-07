@@ -16,11 +16,11 @@ const rootReducer = (state = DEFAULT_STATE, action) => {
   if (action) {
     switch (action.type) {
       case UPDATE_DICTIONARY:
-        const {difficulty, word} = action;
-        const remainingWords = state[difficulty];
-        const dictionary = remainingWords.length ? remainingWords : [...wordList[difficulty]];
+        const {category, word} = action;
+        const remainingWords = state[category];
+        const dictionary = remainingWords.length ? remainingWords : [...wordList[category]];
         return update(state, {
-          [difficulty]: {$set: _.pull(dictionary, word)}
+          [category]: {$set: _.pull(dictionary, word)}
         });
         return state;
       default:
