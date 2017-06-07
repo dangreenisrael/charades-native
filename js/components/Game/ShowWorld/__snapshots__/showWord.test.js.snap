@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<Text
+  accessible={true}
+  allowFontScaling={true}
+  ellipsizeMode="tail"
+  style={
+    Object {
+      "color": "#000",
+      "fontFamily": "System",
+      "fontSize": 40,
+      "lineHeight": 50,
+      "marginBottom": 100,
+      "textAlign": "center",
+    }
+  }
+  virtual={undefined}
+>
+  Tap For a Word
+</Text>
+`;

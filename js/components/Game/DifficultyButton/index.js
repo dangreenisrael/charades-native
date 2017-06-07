@@ -14,7 +14,7 @@ const icon = difficulty => {
   }
 };
 
-class DifficultyButton extends Component {
+export class DifficultyButton extends Component {
   static propTypes = {
     setDifficulty: React.PropTypes.func,
     difficulty: React.PropTypes.string,

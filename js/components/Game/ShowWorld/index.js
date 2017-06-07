@@ -3,7 +3,9 @@ import {Text} from 'native-base';
 import style from './style';
 import {connect} from 'react-redux';
 import {getCurrentWord, getVisibility} from '../../../redux/selectors';
-class ShowWord extends Component {
+
+// Use named export for unconnected component (for tests)
+export class ShowWord extends Component {
   static propTypes = {
     word: React.PropTypes.string,
     isVisible: React.PropTypes.bool
@@ -27,4 +29,5 @@ const mapStateToProps = state => {
   };
 };
 
+// Use default export for the connected component (for app)
 export default connect(mapStateToProps)(ShowWord);

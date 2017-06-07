@@ -8,8 +8,7 @@
 		"test": "jest",
 		"icon-regen": "app-icon generate",
 		"postinstall": "rndebugger-open",
-		"debug-old": "open rndebugger://set-debugger-loc?host=localhost&port=8082",
-		"debug": "open rndebugger://set-debugger-loc?port=8082"
+		"debug": "open rndebugger://set-debugger-loc?host=localhost&port=8082"
 	},
 	"dependencies": {
 		"immutability-helper": "^2.1.2",
@@ -38,6 +37,10 @@
 		"remote-redux-devtools": "^0.5.7"
 	},
 	"jest": {
-		"preset": "react-native"
+		"preset": "react-native",
+    "verbose": true,
+    "transformIgnorePatterns": [
+      "/node_modules/(?!native-base)/"
+    ]
 	}
 }

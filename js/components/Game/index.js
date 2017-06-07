@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
 import ShowWord from './ShowWorld';
-import {View, Container, Header, Title, Text, Button, Icon, Footer, FooterTab} from 'native-base';
+import {View, Container, Header, Title, Footer, FooterTab} from 'native-base';
 import DifficultyButton from './DifficultyButton';
 import GenerateWord from './GenerateWord';
 class Game extends Component {
